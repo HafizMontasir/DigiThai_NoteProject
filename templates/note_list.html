@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Notes{% endblock title %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <form method="GET">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search by title" name="q"
+                    value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if note_list %}
+{% for note in note_list %}
+<div class="card mb-3">
+    <div class="card-header">
+        <span class="font-weight-bold">{{ note.title }}</span> &middot;
+        <span class="text-muted">by {{ note.author }} | {{ note.date }}</span>
+    </div>
+    <div class="card-body">
+        {{ note.body }}
+    </div>
+    <div class="card-footer text-center text-muted">
+        <a href="{% url 'note_edit' note.pk %}" class="btn btn-sm btn-primary">Edit</a>
+        <a href="{% url 'note_delete' note.pk %}" class="btn btn-sm btn-danger">Delete</a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="alert alert-info">No notes found.</div>
+{% endif %}
+{% endblock content %}
